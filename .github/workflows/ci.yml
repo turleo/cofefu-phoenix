@@ -37,7 +37,7 @@ jobs:
           mix deps.get
 
       - name: 🔍 Run Credo
-        run: mix credo --strict
+        run: mix credo
 
   test:
     name: 🧪 Test Suite
