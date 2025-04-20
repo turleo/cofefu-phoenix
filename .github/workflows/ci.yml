@@ -1,0 +1,97 @@
+name: 🔍 Lint & Style Check
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint:
+    name: ✨ Lint & Style Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 🚀 Set up Elixir
+        uses: erlef/setup-beam@v1
+        with:
+          elixir-version: '1.14.0'
+          otp-version: '25.0'
+
+      - name: 📦 Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            deps
+            _build
+          key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-mix-
+
+      - name: ⚙️ Install Dependencies
+        run: |
+          mix local.rebar --force
+          mix local.hex --force
+          mix deps.get
+
+      - name: 🔍 Run Credo
+        run: mix credo --strict
+
+  test:
+    name: 🧪 Test Suite
+    needs: lint
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 🚀 Set up Elixir
+        uses: erlef/setup-beam@v1
+        with:
+          elixir-version: '1.14.0'
+          otp-version: '25.0'
+
+      - name: 📦 Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            deps
+            _build
+          key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-mix-
+
+      - name: ⚙️ Install Dependencies
+        run: |
+          mix local.rebar --force
+          mix local.hex --force
+          mix deps.get
+
+      - name: 🗄️ Setup Database
+        env:
+          MIX_ENV: test
+          MIX_TEST_PARTITION: ${{ github.run_id }}
+        run: |
+          mix ecto.create
+          mix ecto.migrate
+
+      - name: 🧪 Run Tests
+        env:
+          MIX_ENV: test
+          MIX_TEST_PARTITION: ${{ github.run_id }}
+        run: mix test

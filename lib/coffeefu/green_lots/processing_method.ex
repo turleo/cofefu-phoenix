@@ -1,4 +1,7 @@
 defmodule Coffeefu.ProcessingMethod do
+  @moduledoc """
+  A processing method is a method of processing green coffee beans.
+  """
   use Ecto.Schema
   import Ecto.Changeset
 

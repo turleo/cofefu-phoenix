@@ -1,4 +1,7 @@
 defmodule Coffeefu.GreenLot do
+  @moduledoc """
+  A green coffee lot is a single batch of green coffee beans that is harvested from a specific location and processed in a specific way.
+  """
   use Ecto.Schema
   import Ecto.Changeset
 

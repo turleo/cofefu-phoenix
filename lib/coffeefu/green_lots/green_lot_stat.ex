@@ -1,4 +1,7 @@
 defmodule Coffeefu.GreenLotStat do
+  @moduledoc """
+  A green lot stat is a collection of measurements taken from a green coffee lot.
+  """
   use Ecto.Schema
   import Ecto.Changeset
 

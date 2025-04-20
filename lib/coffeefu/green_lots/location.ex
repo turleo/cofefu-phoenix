@@ -1,4 +1,7 @@
 defmodule Coffeefu.Location do
+  @moduledoc """
+  A location is a physical place where green coffee beans are grown.
+  """
   use Ecto.Schema
   import Ecto.Changeset
 
