@@ -5,6 +5,7 @@ on:
     branches: [ main ]
     paths:
       - 'docs/openapi.yaml'
+      - 'docs/index.html'
       - '.github/workflows/api-docs.yml'
 
 jobs:
@@ -14,18 +15,11 @@ jobs:
       - name: 🔄 Checkout
         uses: actions/checkout@v4
 
-      - name: ⚙️ Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: 📦 Install dependencies
+      - name: 📦 Prepare documentation
         run: |
-          npm install -g @stoplight/elements-cli
-
-      - name: 🏗️ Build documentation
-        run: |
-          elements build docs/openapi.yaml -o api-docs
+          mkdir -p api-docs
+          cp docs/openapi.yaml api-docs/
+          cp docs/index.html api-docs/
 
       - name: 🚀 Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
