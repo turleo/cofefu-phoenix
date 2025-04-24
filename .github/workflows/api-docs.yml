@@ -18,6 +18,12 @@ jobs:
       - name: 🔄 Checkout
         uses: actions/checkout@v4
 
+      - name: 📦 Prepare documentation
+        run: |
+          mkdir -p docs/api
+          cp docs/openapi.yaml docs/api/
+          cp docs/index.html docs/api/
+
       - name: 🚀 Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
