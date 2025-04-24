@@ -4,8 +4,8 @@ on:
   push:
     branches: [ main ]
     paths:
-      - 'docs/openapi.yaml'
-      - 'docs/index.html'
+      - 'docs/openapi/openapi.yaml'
+      - 'docs/openapi/index.html'
       - '.github/workflows/api-docs.yml'
 
 jobs:
@@ -18,15 +18,8 @@ jobs:
       - name: 🔄 Checkout
         uses: actions/checkout@v4
 
-      - name: 📦 Prepare documentation
-        run: |
-          mkdir -p api-docs
-          cp docs/openapi.yaml api-docs/
-          cp docs/index.html api-docs/
-
       - name: 🚀 Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./api-docs
-          destination_dir: api-docs 
+          publish_dir: ./docs/

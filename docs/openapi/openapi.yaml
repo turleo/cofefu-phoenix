@@ -10,9 +10,14 @@ servers:
 
 paths:
   /green_lots:
-    get:
+    post:
       summary: Returns a list of green coffee lots.
       description: Returns a list of all green coffee lots with their associated data.
+      tags:
+        - Green Lots
+        - Inner
+      requestBody:
+        $ref: '#/components/schemas/GreenLot'
       responses:
         "200":
           description: A JSON array of green coffee lots
