@@ -1,0 +1,141 @@
+openapi: 3.0.4
+info:
+  title: Cofefu
+  description: The best (and made up) coffee roaster
+  version: 0.0.1
+
+servers:
+  - url: http://localhost:4000/api/
+    description: LOCALHOST!!!
+
+paths:
+  /green_lots:
+    post:
+      summary: Returns a list of green coffee lots.
+      description: Returns a list of all green coffee lots with their associated data.
+      tags:
+        - Green Lots
+        - Inner
+      requestBody:
+        $ref: '#/components/schemas/GreenLot'
+      responses:
+        "200":
+          description: A JSON array of green coffee lots
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GreenLot'
+
+components:
+  schemas:
+    GreenLot:
+      type: object
+      properties:
+        lot_number:
+          type: string
+          description: Unique identifier for the green coffee lot
+        harvest_date:
+          type: string
+          format: date
+          description: Date when the coffee was harvested
+        location:
+          $ref: '#/components/schemas/Location'
+        processing_method:
+          $ref: '#/components/schemas/ProcessingMethod'
+        green_lot_stat:
+          $ref: '#/components/schemas/GreenLotStat'
+        inserted_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - lot_number
+        - harvest_date
+        - location
+        - processing_method
+
+    Location:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the location
+        country_code:
+          type: string
+          description: ISO country code
+        region:
+          type: string
+          description: Region or state where the coffee was grown
+        farm:
+          type: string
+          description: Name of the farm
+        farmer:
+          type: string
+          description: Name of the farmer
+        inserted_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - country_code
+        - region
+        - farm
+        - farmer
+
+    ProcessingMethod:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the processing method
+        name:
+          type: string
+          description: Name of the processing method
+        inserted_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - name
+
+    GreenLotStat:
+      type: object
+      properties:
+        lot_number:
+          type: string
+          description: Reference to the green lot
+        humidity:
+          type: number
+          format: decimal
+          description: Humidity percentage of the green coffee
+        aw:
+          type: number
+          format: decimal
+          description: Water activity level
+        density:
+          type: integer
+          description: Density of the green coffee
+        inserted_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - lot_number
+        - humidity
+        - aw
+        - density
+    
