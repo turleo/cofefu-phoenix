@@ -9,6 +9,66 @@ servers:
     description: LOCALHOST!!!
 
 paths:
+  /auth/login:
+    post:
+      summary: Login to the system
+      description: Login to the system
+      tags:
+        - Auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        "200":
+          description: A JSON object containing the user's token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+        "401":
+          description: Unauthorized
+  /auth/refresh:
+    post:
+      summary: Refresh the user's token
+      description: Refresh the user's token
+      tags:
+        - Auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshTokenRequest'
+      responses:
+        "200":
+          description: A JSON object containing the user's token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+        "401":
+          description: Unauthorized
+  /auth/register:
+    post:
+      summary: Register a new user
+      description: Register a new user
+      tags:
+        - Auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegistrationRequest'
+      responses:
+        "200":
+          description: A JSON object containing the user's token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+        "400":
+          description: Bad Request
   /green_lots:
     post:
       summary: Returns a list of green coffee lots.
@@ -17,7 +77,10 @@ paths:
         - Green Lots
         - Inner
       requestBody:
-        $ref: '#/components/schemas/GreenLot'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GreenLot'
       responses:
         "200":
           description: A JSON array of green coffee lots
@@ -30,6 +93,35 @@ paths:
 
 components:
   schemas:
+    RegistrationRequest:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+        nickname:
+          type: string
+    LoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+    RefreshTokenRequest:
+      type: object
+      properties:
+        refresh_token:
+          type: string
+    TokenResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+        refresh_token:
+          type: string
+
     GreenLot:
       type: object
       properties:
@@ -138,4 +230,3 @@ components:
         - humidity
         - aw
         - density
-    
