@@ -7,11 +7,9 @@ defmodule Coffeefu.Auth.Repo do
   alias Coffeefu.Auth.{EmployeeProfile, Role, RolePermission, User, UserRole}
 
   def register_user(attrs) do
-    user = %User{}
+    %User{}
     |> User.registration_changeset(attrs)
     |> Repo.insert()
-
-    user
   end
 
   def check_user_permission(user, permission) do
@@ -24,4 +22,24 @@ defmodule Coffeefu.Auth.Repo do
     end)
     length(role_permission) > 0
   end
+
+  def generate_access_token(user) do
+    access_token = Phoenix.Token.sign(CoffeefuWeb.Endpoint, "user_id", user.id)
+    refresh_token = Phoenix.Token.sign(CoffeefuWeb.Endpoint, "user_id", user.id, max_age: 60 * 60 * 24 * 30)
+    {:ok, access_token, refresh_token}
+  end
+
+  def get_user_by_access_token(token) do
+    {:ok, user_id} = Phoenix.Token.verify(CoffeefuWeb.Endpoint, "user_id", token)
+    user = Repo.get!(User, user_id)
+    {:ok, user}
+  end
+
+  def update_access_token(refresh_token) do
+    {:ok, user_id} = Phoenix.Token.verify(CoffeefuWeb.Endpoint, "user_id", refresh_token)
+    user = Repo.get!(User, user_id)
+    {:ok, access_token, refresh_token} = generate_access_token(user)
+    {:ok, access_token, refresh_token}
+  end
+
 end
