@@ -10,6 +10,7 @@ defmodule Coffeefu.Application do
     children = [
       CoffeefuWeb.Telemetry,
       Coffeefu.Repo,
+      Coffeefu.Auth.Repo,
       {DNSCluster, query: Application.get_env(:coffeefu, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: Coffeefu.PubSub},
       # Start the Finch HTTP client for sending emails

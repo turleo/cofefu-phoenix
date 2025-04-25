@@ -11,6 +11,9 @@ config :coffeefu,
   ecto_repos: [Coffeefu.Repo],
   generators: [timestamp_type: :utc_datetime]
 
+config :coffeefu, Coffeefu.Auth,
+  ecto_repos: [Coffeefu.Auth.Repo]
+
 # Configures the endpoint
 config :coffeefu, CoffeefuWeb.Endpoint,
   url: [host: "localhost"],

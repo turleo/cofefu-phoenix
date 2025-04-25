@@ -59,7 +59,10 @@ defmodule Coffeefu.MixProject do
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.5"},
 
-      {:credo, "~> 1.7", only: [:dev, :test], runtime: false}
+      {:bcrypt_elixir, "~> 3.2.1"},
+
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
+      {:faker, "~> 0.19.0-alpha.1", only: :test}
     ]
   end
 

@@ -7,10 +7,10 @@ defmodule Coffeefu.GreenLots do
   alias Coffeefu.Repo
 
   alias Coffeefu.{
-    Location,
-    ProcessingMethod,
     GreenLot,
-    GreenLotStat
+    GreenLotStat,
+    Location,
+    ProcessingMethod
   }
 
   # ---------------------
