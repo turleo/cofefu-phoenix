@@ -20,10 +20,13 @@ defmodule CoffeefuWeb.Router do
     get "/", PageController, :home
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", CoffeefuWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", CoffeefuWeb do
+    pipe_through :api
+
+    post "/auth/login", AuthJSONController, :login
+    post "/auth/register", AuthJSONController, :register
+    post "/auth/refresh", AuthJSONController, :refresh_token
+  end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:coffeefu, :dev_routes) do

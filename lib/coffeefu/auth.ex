@@ -23,6 +23,10 @@ defmodule Coffeefu.Auth.Repo do
     length(role_permission) > 0
   end
 
+  def generate_access_token(nil) do
+    {:error, :unauthorized}
+  end
+
   def generate_access_token(user) do
     access_token = Phoenix.Token.sign(CoffeefuWeb.Endpoint, "user_id", user.id)
     refresh_token = Phoenix.Token.sign(CoffeefuWeb.Endpoint, "user_id", user.id, max_age: 60 * 60 * 24 * 30)
@@ -37,9 +41,8 @@ defmodule Coffeefu.Auth.Repo do
 
   def update_access_token(refresh_token) do
     {:ok, user_id} = Phoenix.Token.verify(CoffeefuWeb.Endpoint, "user_id", refresh_token)
-    user = Repo.get!(User, user_id)
-    {:ok, access_token, refresh_token} = generate_access_token(user)
-    {:ok, access_token, refresh_token}
+    user = Repo.get(User, user_id)
+    generate_access_token(user)
   end
 
 end
